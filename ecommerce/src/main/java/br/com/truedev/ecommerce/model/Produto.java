@@ -2,6 +2,10 @@ package br.com.truedev.ecommerce.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -41,6 +46,18 @@ public class Produto {
 			   joinColumns = @JoinColumn(name = "id_produto"),
 			   inverseJoinColumns = @JoinColumn(name = "id_categoria"))
 	private List<Categoria> categorias;
+
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("produto")
+	private List<Variante> variantes;
+	
+	public List<Variante> getVariantes() {
+		return variantes;
+	}
+
+	public void setVariantes(List<Variante> variantes) {
+		this.variantes = variantes;
+	}
 
 	public List<Categoria> getCategorias() {
 		return categorias;
